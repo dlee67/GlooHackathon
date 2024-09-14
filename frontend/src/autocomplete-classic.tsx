@@ -33,7 +33,11 @@ export const PlaceAutocompleteClassic = ({onPlaceSelect}: Props) => {
 
   return (
     <div className="autocomplete-container">
-      <input ref={inputRef} />
+      <p/>
+      <input 
+        ref={inputRef} 
+        style={{ width: '500px', height: '30px' }} 
+      />
     </div>
   );
 };
