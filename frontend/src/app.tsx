@@ -49,6 +49,10 @@ const App = () => {
     }, [selectedPlace]);
 
     return (
+    <>
+    <header style = {{textAlign: 'center'}}>
+        <h1>Methuselah</h1>
+    </header>
     <APIProvider apiKey={API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
         <Map
             mapId="map"
@@ -67,6 +71,7 @@ const App = () => {
 
         <MapHandler place={selectedPlace} />
     </APIProvider>
+    </>
     );
 };
 
