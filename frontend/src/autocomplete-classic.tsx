@@ -36,7 +36,7 @@ export const PlaceAutocompleteClassic = ({onPlaceSelect}: Props) => {
       <p/>
       <input 
         ref={inputRef} 
-        style={{ width: '500px', height: '30px' }} 
+        style={{ width: '500px', height: '30px', fontSize: '16px' }} 
       />
     </div>
   );
