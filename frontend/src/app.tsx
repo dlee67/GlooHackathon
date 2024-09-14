@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { createRoot } from "react-dom/client";
 import { APIProvider, ControlPosition, Map, MapCameraChangedEvent, Pin, AdvancedMarker } from '@vis.gl/react-google-maps';
 
@@ -27,6 +27,7 @@ const API_KEY = process.env.GOOGLE_MAPS_API_KEY
 type Poi ={ key: string, location: google.maps.LatLngLiteral }
 
 const App = () => {
+    const [poiList, setPoiList] = useState<Poi[]>([]);
     const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
     console.log('address:',selectedPlace?.formatted_address);
@@ -34,16 +35,30 @@ const App = () => {
         selectedPlace?.geometry?.location.lat(),
         selectedPlace?.geometry?.location.lng());
 
+    useEffect(() => { // add new marker when a place is selected
+        if (selectedPlace) {
+            const newPoi: Poi = {
+                key: selectedPlace.formatted_address,
+                location: {
+                    lat: selectedPlace.geometry.location.lat(),
+                    lng: selectedPlace.geometry.location.lng()
+                }
+            };
+            setPoiList(prevList => [...prevList, newPoi]);
+        }
+    }, [selectedPlace]);
+
     return (
     <APIProvider apiKey={API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
         <Map
+            mapId="map"
             defaultZoom={13}
             defaultCenter={ initialPosition }
             gestureHandling={'greedy'}
             onCameraChanged={ (ev: MapCameraChangedEvent) =>
                 console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
             } >
-            <PoiMarkers pois={[]} />
+            <PoiMarkers pois={poiList} />
         </Map>
         <CustomMapControl
             controlPosition={ControlPosition.TOP}
