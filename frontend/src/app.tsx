@@ -14,22 +14,39 @@
  * limitations under the License.
 */
 
-import React from 'react';
+import React, {useState} from 'react';
 import { createRoot } from "react-dom/client";
-import { APIProvider, Map, MapCameraChangedEvent } from '@vis.gl/react-google-maps';
+import { APIProvider, ControlPosition, Map, MapCameraChangedEvent } from '@vis.gl/react-google-maps';
 
+import MapHandler from './map-handler';
+import { CustomMapControl } from './map-control';
 
-const App = () => (
-    <APIProvider apiKey={process.env.GOOGLE_MAPS_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
+const initialPosition = { lat: 40.0173051, lng: -105.2843275 };
+const API_KEY = process.env.GOOGLE_MAPS_API_KEY
+
+const App = () => {
+    const [selectedPlace, setSelectedPlace] =
+    useState<google.maps.places.PlaceResult | null>(null);
+    console.log('address:',selectedPlace);
+
+    return (
+    <APIProvider apiKey={API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
         <Map
             defaultZoom={13}
-            defaultCenter={ { lat: 40.0173051, lng: -105.2843275 } }
+            defaultCenter={ initialPosition }
+            gestureHandling={'greedy'}
             onCameraChanged={ (ev: MapCameraChangedEvent) =>
                 console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
-            }>
-        </Map>
+            } />
+        <CustomMapControl
+            controlPosition={ControlPosition.TOP}
+            onPlaceSelect={setSelectedPlace}
+        />
+
+        <MapHandler place={selectedPlace} />
     </APIProvider>
-);
+    );
+};
 
 const root = createRoot(document.getElementById('app'));
 root.render(<App />);
