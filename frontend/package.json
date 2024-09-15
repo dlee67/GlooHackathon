@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "dependencies": {
     "@googlemaps/markerclusterer": "^2.5.1",
     "@vis.gl/react-google-maps": "latest",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.5.5",
+    "@vitejs/plugin-react": "^4.3.1",
     "electron": "^32.1.0",
     "electron-builder": "^25.0.5"
   }
