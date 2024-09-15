@@ -29,5 +29,7 @@ deactivate
 You can run the api locally with:
 
 ```
-uvicorn airlogic_api.api.main:app --reload
+FLASK_APP=app.py flask run
+
+flask run
 ```
